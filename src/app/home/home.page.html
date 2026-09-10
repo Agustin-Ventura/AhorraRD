@@ -6,21 +6,62 @@
 
 <ion-content class="ion-padding">
 
-  <!-- BANNER INDICADOR DE CONEXIÓN -->
-  <!-- Se muestra en VERDE si hay internet, y en ROJO si no lo hay. -->
-  <!-- [ngClass] cambia el color según la variable 'estaEnLinea' del componente. -->
+  <!-- BANNER INDICADOR DE CONEXIÓN (Entregable 1) -->
   <div class="banner-conexion"
        [ngClass]="estaEnLinea ? 'estado-online' : 'estado-offline'">
-
     <span *ngIf="estaEnLinea">🟢 En línea — Conexión disponible</span>
     <span *ngIf="!estaEnLinea">🔴 Sin conexión — Modo offline</span>
-
   </div>
 
-  <!-- Contenido de ejemplo de la app -->
-  <div class="contenido-demo">
-    <h2>Bienvenido a AhorraRD</h2>
-    <p>El indicador de arriba muestra el estado de tu conexión en tiempo real.</p>
+  <!-- MENSAJE AMIGABLE cuando está sin conexión (Entregable 2) -->
+  <div class="mensaje-offline" *ngIf="!estaEnLinea">
+    Estás trabajando sin conexión. Tus gastos se guardarán en el dispositivo
+    y se sincronizarán automáticamente cuando vuelva el internet.
   </div>
+
+  <!-- FORMULARIO para registrar un gasto -->
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Descripción</ion-label>
+      <ion-input [(ngModel)]="descripcion" placeholder="Ej: Almuerzo"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Monto (RD$)</ion-label>
+      <ion-input type="number" [(ngModel)]="monto" placeholder="Ej: 350"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" (click)="registrarGasto()" class="ion-margin-top">
+    Registrar gasto
+  </ion-button>
+
+  <!-- CONTADOR de pendientes por sincronizar -->
+  <div class="info-pendientes" *ngIf="pendientes > 0">
+    ⏳ {{ pendientes }} gasto(s) pendiente(s) de sincronizar
+  </div>
+
+  <!-- LISTA de gastos registrados -->
+  <h2 class="titulo-lista">Mis gastos</h2>
+
+  <p *ngIf="gastos.length === 0" class="lista-vacia">
+    Aún no has registrado gastos.
+  </p>
+
+  <ion-list>
+    <ion-item *ngFor="let gasto of gastos">
+      <ion-label>
+        <h3>{{ gasto.descripcion }}</h3>
+        <p>RD$ {{ gasto.monto }} — {{ gasto.fecha }}</p>
+      </ion-label>
+
+      <!-- Etiqueta que indica si ya se sincronizó o está pendiente -->
+      <ion-badge slot="end" *ngIf="gasto.sincronizado" color="success">
+        Sincronizado
+      </ion-badge>
+      <ion-badge slot="end" *ngIf="!gasto.sincronizado" color="warning">
+        Pendiente
+      </ion-badge>
+    </ion-item>
+  </ion-list>
 
 </ion-content>

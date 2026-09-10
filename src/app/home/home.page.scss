@@ -1,4 +1,4 @@
-/* Banner indicador de conexión */
+/* Banner indicador de conexión (Entregable 1) */
 .banner-conexion {
   display: flex;
   align-items: center;
@@ -8,30 +8,52 @@
   font-weight: bold;
   font-size: 16px;
   text-align: center;
-  margin-bottom: 20px;
-  transition: background-color 0.3s ease; /* transición suave al cambiar de estado */
+  margin-bottom: 16px;
+  transition: background-color 0.3s ease;
 }
 
-/* Estado CON conexión: verde */
 .estado-online {
   background-color: #16a34a;
   color: #ffffff;
 }
 
-/* Estado SIN conexión: rojo */
 .estado-offline {
   background-color: #dc2626;
   color: #ffffff;
 }
 
-/* Contenido de ejemplo */
-.contenido-demo {
-  text-align: center;
-  margin-top: 30px;
-  color: #374151;
+/* Mensaje amigable de modo offline (Entregable 2) */
+.mensaje-offline {
+  background-color: #fef3c7;
+  color: #92400e;
+  border-left: 4px solid #f59e0b;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 16px;
 }
 
-.contenido-demo h2 {
+/* Contador de pendientes */
+.info-pendientes {
+  background-color: #fff7ed;
+  color: #9a3412;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-top: 16px;
+}
+
+/* Lista de gastos */
+.titulo-lista {
   color: #2563eb;
   font-weight: bold;
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.lista-vacia {
+  color: #6b7280;
+  text-align: center;
+  font-style: italic;
 }
