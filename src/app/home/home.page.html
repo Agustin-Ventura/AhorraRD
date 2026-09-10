@@ -1,20 +1,26 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>AhorraRD</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <!-- BANNER INDICADOR DE CONEXIÓN -->
+  <!-- Se muestra en VERDE si hay internet, y en ROJO si no lo hay. -->
+  <!-- [ngClass] cambia el color según la variable 'estaEnLinea' del componente. -->
+  <div class="banner-conexion"
+       [ngClass]="estaEnLinea ? 'estado-online' : 'estado-offline'">
+
+    <span *ngIf="estaEnLinea">🟢 En línea — Conexión disponible</span>
+    <span *ngIf="!estaEnLinea">🔴 Sin conexión — Modo offline</span>
+
   </div>
+
+  <!-- Contenido de ejemplo de la app -->
+  <div class="contenido-demo">
+    <h2>Bienvenido a AhorraRD</h2>
+    <p>El indicador de arriba muestra el estado de tu conexión en tiempo real.</p>
+  </div>
+
 </ion-content>
