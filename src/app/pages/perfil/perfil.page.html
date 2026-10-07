@@ -6,13 +6,12 @@
 
 <ion-content class="ion-padding">
 
+  <!-- TARJETA DE PERFIL -->
   <ion-card>
     <ion-card-content>
 
-      <!-- FOTO DE PERFIL -->
       <div class="zona-foto">
         <ion-avatar class="avatar-grande">
-          <!-- Si hay foto, se muestra; si no, un ícono por defecto -->
           <img *ngIf="fotoPerfil" [src]="fotoPerfil" alt="Foto de perfil" />
           <ion-icon *ngIf="!fotoPerfil" name="person-circle-outline" class="icono-defecto"></ion-icon>
         </ion-avatar>
@@ -23,7 +22,6 @@
         </ion-button>
       </div>
 
-      <!-- DATOS DEL PERFIL -->
       <ion-item>
         <ion-label position="stacked">Nombre</ion-label>
         <ion-input [(ngModel)]="nombre" placeholder="Tu nombre"></ion-input>
@@ -39,6 +37,41 @@
         Guardar perfil
       </ion-button>
 
+    </ion-card-content>
+  </ion-card>
+
+  <!-- TARJETA DE BLUETOOTH (Unidad 5) -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="bluetooth-outline"></ion-icon>
+        Dispositivos Bluetooth
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p class="texto-bt">Escanea dispositivos Bluetooth cercanos.</p>
+
+      <ion-button expand="block" (click)="escanearBluetooth()" [disabled]="escaneando">
+        <ion-spinner *ngIf="escaneando" name="crescent" slot="start"></ion-spinner>
+        <ion-icon *ngIf="!escaneando" slot="start" name="bluetooth-outline"></ion-icon>
+        {{ escaneando ? 'Escaneando...' : 'Escanear dispositivos' }}
+      </ion-button>
+
+      <!-- Lista de dispositivos encontrados -->
+      <ion-list *ngIf="dispositivos.length > 0">
+        <ion-item *ngFor="let d of dispositivos">
+          <ion-icon name="bluetooth-outline" slot="start" color="primary"></ion-icon>
+          <ion-label>
+            <h3>{{ d.nombre }}</h3>
+            <p>ID: {{ d.id }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <p *ngIf="dispositivos.length === 0 && !escaneando" class="sin-dispositivos">
+        No hay dispositivos aún. Pulsa "Escanear".
+      </p>
     </ion-card-content>
   </ion-card>
 
