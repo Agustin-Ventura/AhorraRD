@@ -1,13 +1,45 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>perfil</ion-title>
+    <ion-title>AhorraRD — Perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">perfil</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+
+  <ion-card>
+    <ion-card-content>
+
+      <!-- FOTO DE PERFIL -->
+      <div class="zona-foto">
+        <ion-avatar class="avatar-grande">
+          <!-- Si hay foto, se muestra; si no, un ícono por defecto -->
+          <img *ngIf="fotoPerfil" [src]="fotoPerfil" alt="Foto de perfil" />
+          <ion-icon *ngIf="!fotoPerfil" name="person-circle-outline" class="icono-defecto"></ion-icon>
+        </ion-avatar>
+
+        <ion-button fill="outline" size="small" (click)="tomarFoto()">
+          <ion-icon slot="start" name="camera-outline"></ion-icon>
+          Tomar foto
+        </ion-button>
+      </div>
+
+      <!-- DATOS DEL PERFIL -->
+      <ion-item>
+        <ion-label position="stacked">Nombre</ion-label>
+        <ion-input [(ngModel)]="nombre" placeholder="Tu nombre"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Carrera</ion-label>
+        <ion-input [(ngModel)]="carrera" placeholder="Ej: Tecnología"></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" class="ion-margin-top" (click)="guardarPerfil()">
+        <ion-icon slot="start" name="save-outline"></ion-icon>
+        Guardar perfil
+      </ion-button>
+
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>
