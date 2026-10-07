@@ -1,13 +1,60 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>recursos</ion-title>
+    <ion-title>AhorraRD — Recursos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">recursos</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+
+  <h2 class="titulo">🎧 Podcasts de educación financiera</h2>
+
+  <!-- LISTA de podcasts -->
+  <ion-list>
+    <ion-item *ngFor="let podcast of podcasts" button (click)="reproducir(podcast)">
+      <ion-icon name="musical-notes-outline" slot="start" color="primary"></ion-icon>
+      <ion-label>
+        <h3>{{ podcast.titulo }}</h3>
+        <p>{{ podcast.autor }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- REPRODUCTOR: solo aparece cuando hay algo seleccionado -->
+  <ion-card *ngIf="tituloActual">
+    <ion-card-content>
+
+      <p class="ahora-suena">Reproduciendo:</p>
+      <h3 class="titulo-actual">{{ tituloActual }}</h3>
+
+      <!-- Barra de progreso -->
+      <ion-range
+        [value]="progreso"
+        (ionInput)="buscar($event)"
+        color="primary">
+      </ion-range>
+
+      <!-- Tiempos -->
+      <div class="tiempos">
+        <span>{{ tiempoActual }}</span>
+        <span>{{ duracion }}</span>
+      </div>
+
+      <!-- Controles play/pausa/stop -->
+      <div class="controles">
+        <ion-button *ngIf="!reproduciendo" (click)="reanudar()" fill="clear" size="large">
+          <ion-icon slot="icon-only" name="play-outline"></ion-icon>
+        </ion-button>
+
+        <ion-button *ngIf="reproduciendo" (click)="pausar()" fill="clear" size="large">
+          <ion-icon slot="icon-only" name="pause-outline"></ion-icon>
+        </ion-button>
+
+        <ion-button (click)="detener()" fill="clear" size="large" color="danger">
+          <ion-icon slot="icon-only" name="stop-outline"></ion-icon>
+        </ion-button>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>
