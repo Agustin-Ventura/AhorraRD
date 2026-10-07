@@ -1,13 +1,50 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>inicio</ion-title>
+    <ion-title>AhorraRD — Inicio</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">inicio</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+
+  <h2 class="bienvenida">¡Bienvenido a AhorraRD!</h2>
+  <p class="subtitulo">Tu asistente de finanzas personales</p>
+
+  <!-- TARJETA: Tasa del dólar (consumo de API REST - Unidad 10) -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="trending-up-outline"></ion-icon>
+        Tasa del dólar (USD → DOP)
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <!-- Estado 1: CARGANDO (spinner) -->
+      <div *ngIf="cargando" class="centro">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Consultando la tasa...</p>
+      </div>
+
+      <!-- Estado 2: ÉXITO (muestra la tasa) -->
+      <div *ngIf="!cargando && !error && tasaDolar" class="centro">
+        <p class="tasa">RD$ {{ tasaDolar | number:'1.2-2' }}</p>
+        <p class="detalle">1 USD = {{ tasaDolar | number:'1.2-2' }} DOP</p>
+        <p class="fecha">Actualizado: {{ fecha }}</p>
+      </div>
+
+      <!-- Estado 3: ERROR (mensaje + reintentar) -->
+      <div *ngIf="error" class="centro">
+        <p class="error-texto">No se pudo cargar la tasa. Revisa tu conexión.</p>
+      </div>
+
+      <!-- Botón para recargar manualmente -->
+      <ion-button expand="block" fill="outline" (click)="cargarTasa()" [disabled]="cargando">
+        <ion-icon slot="start" name="refresh-outline"></ion-icon>
+        Actualizar
+      </ion-button>
+
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>
