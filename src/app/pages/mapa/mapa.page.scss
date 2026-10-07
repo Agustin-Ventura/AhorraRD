@@ -1,0 +1,9 @@
+.barra-mapa {
+  padding: 10px;
+}
+
+/* El mapa necesita una altura definida para mostrarse */
+#mapa {
+  width: 100%;
+  height: 75vh; /* 75% del alto de la pantalla */
+}

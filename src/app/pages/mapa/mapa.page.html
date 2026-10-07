@@ -1,13 +1,21 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>mapa</ion-title>
+    <ion-title>AhorraRD — Mapa</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">mapa</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+
+  <!-- Botón para centrar el mapa en mi ubicación (GPS) -->
+  <div class="barra-mapa">
+    <ion-button expand="block" (click)="ubicarme()" [disabled]="cargando">
+      <ion-spinner *ngIf="cargando" name="crescent" slot="start"></ion-spinner>
+      <ion-icon *ngIf="!cargando" slot="start" name="locate-outline"></ion-icon>
+      Ubícame
+    </ion-button>
+  </div>
+
+  <!-- Contenedor donde se dibuja el mapa de Leaflet -->
+  <div id="mapa"></div>
+
 </ion-content>
