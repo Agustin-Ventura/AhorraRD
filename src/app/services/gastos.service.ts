@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { NetworkService } from './network.service';
 
-// Definimos cómo se ve un "gasto" en la app
 export interface Gasto {
   id: number;
   descripcion: string;
   monto: number;
   fecha: string;
-  sincronizado: boolean; // true = ya está en el servidor; false = pendiente
+  sincronizado: boolean;
 }
 
 @Injectable({
@@ -17,7 +16,7 @@ export interface Gasto {
 export class GastosService {
 
   private _storage: Storage | null = null;
-  private readonly CLAVE = 'gastos'; // nombre con el que guardamos la lista
+  private readonly CLAVE = 'gastos';
 
   constructor(
     private storage: Storage,
@@ -26,11 +25,9 @@ export class GastosService {
     this.init();
   }
 
-  /** Prepara el almacenamiento al iniciar */
   private async init(): Promise<void> {
     this._storage = await this.storage.create();
 
-    // Escuchamos la conexión: cuando vuelve el internet, sincronizamos lo pendiente
     this.networkService.estadoConexion$.subscribe((online: boolean) => {
       if (online) {
         this.sincronizarPendientes();
@@ -38,44 +35,54 @@ export class GastosService {
     });
   }
 
-  /** Devuelve todos los gastos guardados */
+  /** READ: devuelve todos los gastos guardados */
   public async obtenerGastos(): Promise<Gasto[]> {
     const gastos = await this._storage?.get(this.CLAVE);
     return gastos || [];
   }
 
-  /**
-   * Registra un gasto nuevo.
-   * Si hay internet -> se marca como sincronizado (simulamos envío al servidor).
-   * Si NO hay internet -> se guarda como pendiente (sincronizado = false).
-   */
+  /** CREATE: registra un gasto nuevo */
   public async agregarGasto(descripcion: string, monto: number): Promise<void> {
     const gastos = await this.obtenerGastos();
     const hayInternet = this.networkService.estaEnLinea();
 
     const nuevoGasto: Gasto = {
-      id: Date.now(), // id único basado en la hora
+      id: Date.now(),
       descripcion: descripcion,
       monto: monto,
       fecha: new Date().toLocaleString(),
-      sincronizado: hayInternet // si hay internet queda sincronizado de una vez
+      sincronizado: hayInternet
     };
 
     gastos.push(nuevoGasto);
     await this._storage?.set(this.CLAVE, gastos);
   }
 
-  /**
-   * Sincroniza los gastos pendientes cuando vuelve la conexión.
-   * Aquí simulamos el "envío al servidor" marcándolos como sincronizados.
-   */
+  /** UPDATE: modifica un gasto existente por su id */
+  public async actualizarGasto(id: number, descripcion: string, monto: number): Promise<void> {
+    const gastos = await this.obtenerGastos();
+    const gasto = gastos.find(g => g.id === id);
+    if (gasto) {
+      gasto.descripcion = descripcion;
+      gasto.monto = monto;
+      await this._storage?.set(this.CLAVE, gastos);
+    }
+  }
+
+  /** DELETE: elimina un gasto por su id */
+  public async eliminarGasto(id: number): Promise<void> {
+    let gastos = await this.obtenerGastos();
+    gastos = gastos.filter(g => g.id !== id);
+    await this._storage?.set(this.CLAVE, gastos);
+  }
+
+  /** Sincroniza los gastos pendientes cuando vuelve la conexión */
   public async sincronizarPendientes(): Promise<void> {
     const gastos = await this.obtenerGastos();
     let huboCambios = false;
 
     for (const gasto of gastos) {
       if (!gasto.sincronizado) {
-        // Aquí iría la llamada real al servidor (API). Lo simulamos:
         gasto.sincronizado = true;
         huboCambios = true;
       }
